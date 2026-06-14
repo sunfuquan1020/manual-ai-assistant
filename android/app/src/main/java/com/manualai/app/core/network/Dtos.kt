@@ -22,6 +22,13 @@ data class CreateDeviceBody(
 )
 
 @JsonClass(generateAdapter = true)
+data class ManualFromUrlBody(
+    val url: String,
+    @Json(name = "device_id") val deviceId: String? = null,
+    @Json(name = "device_name") val deviceName: String? = null,
+)
+
+@JsonClass(generateAdapter = true)
 data class ManualDto(
     val id: String,
     @Json(name = "device_id") val deviceId: String? = null,
@@ -33,6 +40,27 @@ data class ManualDto(
     @Json(name = "page_count") val pageCount: Int? = null,
     val error: String? = null,
     @Json(name = "created_at") val createdAt: String,
+)
+
+@JsonClass(generateAdapter = true)
+data class IdentificationDto(
+    val brand: String? = null,
+    @Json(name = "model_number") val modelNumber: String? = null,
+    val category: String? = null,
+    @Json(name = "device_type") val deviceType: String? = null,
+    val keywords: List<String> = emptyList(),
+)
+
+@JsonClass(generateAdapter = true)
+data class DeviceMatchDto(
+    val device: DeviceDto,
+    val manuals: List<ManualDto>,
+)
+
+@JsonClass(generateAdapter = true)
+data class IdentifyResponseDto(
+    val identification: IdentificationDto,
+    val matches: List<DeviceMatchDto>,
 )
 
 @JsonClass(generateAdapter = true)

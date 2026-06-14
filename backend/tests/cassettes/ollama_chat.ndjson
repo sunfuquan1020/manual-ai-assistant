@@ -1,0 +1,2 @@
+{"model": "llama3.1", "message": {"role": "assistant", "content": "取出滤网"}, "done": false}
+{"model": "llama3.1", "message": {"role": "assistant", "content": "，用清水冲洗。"}, "done": true}

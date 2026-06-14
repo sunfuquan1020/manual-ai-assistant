@@ -26,12 +26,16 @@ MVP 四个页面：**设备 / 上传 / 问答 / 设置**。
 
 > Debug 包已开启 `usesCleartextTraffic` 以便本地 http 调试；上线请改 HTTPS。
 
-## 使用流程（MVP）
+## 使用流程
 
-1. **上传**：选 PDF 说明书（可填设备名），上传后自动建立知识库（索引）。
+1. **上传**：选 PDF 说明书（可填设备名），上传后自动建立知识库（索引）；
+   也可 **扫码下载**（二维码含 PDF 链接）或 **拍照识别设备**。
 2. **设备**：查看设备与说明书的索引状态（待处理/索引中/已就绪/失败），可重新索引。
 3. **问答**：顶部选设备范围（或全部），输入使用问题，流式得到答案 + 来源页码。
 4. **设置**：切换后端地址与 AI 供应商/模型。
+
+> 扫码用 CameraX + ML Kit（需相机权限）；拍照识别可拍照或从相册选图，
+> 走后端 `/devices/identify`（LLM vision）。
 
 ## 结构
 
@@ -43,7 +47,9 @@ app/src/main/java/com/manualai/app/
   feature/
     navigation/    AppNav（底部导航）
     devices/       DevicesScreen + ViewModel
-    upload/        UploadScreen + ViewModel
+    upload/        UploadScreen + ViewModel（含扫码/拍照入口）
+    scan/          ScanScreen + ViewModel（CameraX + ML Kit 扫码下载）
+    identify/      IdentifyScreen + ViewModel（拍照/选图 → vision 识别）
     chat/          ChatScreen + ViewModel（SSE 流式 + 来源）
     settings/      SettingsScreen + ViewModel（供应商/模型/地址）
 ```

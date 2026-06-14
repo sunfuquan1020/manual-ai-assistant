@@ -8,16 +8,14 @@
 - **客户端** [`android/`](android/README.md)：Kotlin + Jetpack Compose，
   上传 / 设备 / 问答 / 设置 四个页面。
 
-## MVP 范围（已实现）
+## 已实现功能
 
-1. 上传 PDF 说明书 → 自动建立 RAG 知识库
+1. 上传 PDF 说明书 / **扫二维码下载**（`POST /manuals/from-url`）→ 自动建立 RAG 知识库
 2. 设备/说明书管理与索引状态
 3. AI 对话：检索对应说明书，流式作答 + 来源页码，供应商可在设置页切换
+4. **拍照识别设备**：LLM vision 识别品牌/型号并匹配已有设备（`POST /devices/identify`）
 
-## 后续阶段（架构已预留）
-
-- 扫码二维码下载说明书（CameraX + ML Kit → `POST /manuals/from-url`）
-- 拍照识别设备（Claude 多模态 vision → `POST /devices/identify`）
+四大功能全部落地。后续可扩展：扫描件 PDF 的 OCR、识别后一键跳转对应设备问答等。
 
 ## 快速跑通
 

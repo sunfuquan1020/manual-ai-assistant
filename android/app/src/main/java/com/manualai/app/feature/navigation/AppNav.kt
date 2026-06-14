@@ -26,6 +26,8 @@ import androidx.navigation.compose.rememberNavController
 import com.manualai.app.data.SettingsRepository
 import com.manualai.app.feature.chat.ChatScreen
 import com.manualai.app.feature.devices.DevicesScreen
+import com.manualai.app.feature.identify.IdentifyScreen
+import com.manualai.app.feature.scan.ScanScreen
 import com.manualai.app.feature.settings.SettingsScreen
 import com.manualai.app.feature.upload.UploadScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -85,7 +87,14 @@ fun AppNav() {
             modifier = Modifier.padding(padding),
         ) {
             composable("devices") { DevicesScreen() }
-            composable("upload") { UploadScreen() }
+            composable("upload") {
+                UploadScreen(
+                    onScanClick = { navController.navigate("scan") },
+                    onIdentifyClick = { navController.navigate("identify") },
+                )
+            }
+            composable("scan") { ScanScreen(onClose = { navController.popBackStack() }) }
+            composable("identify") { IdentifyScreen() }
             composable("chat") { ChatScreen() }
             composable("settings") { SettingsScreen() }
         }

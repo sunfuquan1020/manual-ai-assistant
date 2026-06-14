@@ -32,16 +32,23 @@ uvicorn app.main:app --reload
 | 方法 | 路径 | 说明 |
 |---|---|---|
 | POST | `/manuals/upload` | 上传 PDF 说明书（multipart：`file` + 可选 `device_id`/`device_name`） |
-| POST | `/manuals/{id}/ingest` | 解析→分块→向量化（Stage 2） |
+| POST | `/manuals/from-url` | 按 URL 下载 PDF（扫码流程）并自动索引 |
+| POST | `/manuals/{id}/ingest` | 解析→分块→向量化 |
 | GET  | `/manuals/{id}` | 查说明书状态 |
 | POST | `/devices` / GET `/devices` | 设备管理 |
 | GET  | `/devices/{id}/manuals` | 某设备的说明书 |
-| GET  | `/providers` | 可用供应商与模型列表（Stage 3） |
-| POST | `/chat` | RAG 对话，SSE 流式（Stage 3） |
+| POST | `/devices/identify` | 上传设备照片，LLM vision 识别品牌/型号并匹配设备（multipart：`file` + 可选 `provider`/`model`） |
+| GET  | `/providers` | 可用供应商与模型列表 |
+| POST | `/chat` | RAG 对话，SSE 流式 |
 
 ## 测试
 
 ```bash
-pytest                 # 上传等不依赖 pgvector 的测试（SQLite）
+pytest                 # 全部（默认含录制式 provider 测试，离线）
+pytest -m recorded     # 仅 LLM provider 录制回放测试（claude/openai/ollama，离线）
 pytest -m pgvector     # 需要运行中的 Postgres + pgvector
 ```
+
+录制式测试用 `tests/cassettes/` 下的录制响应 + httpx MockTransport 回放，
+跑通各 provider 的真实 SDK 解析逻辑，无需密钥与网络。重新录制只需用真实响应覆盖对应
+cassette 文件（保持线格式不变）。

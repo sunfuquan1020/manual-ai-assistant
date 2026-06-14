@@ -1,0 +1,1 @@
+{"model": "llava", "message": {"role": "assistant", "content": "{\"brand\": \"Gree\", \"model_number\": \"KFR-35\", \"category\": \"空调\", \"device_type\": \"壁挂空调\", \"keywords\": [\"空调\", \"格力\"]}"}, "done": true}

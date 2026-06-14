@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,7 +31,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UploadScreen(vm: UploadViewModel = hiltViewModel()) {
+fun UploadScreen(
+    onScanClick: () -> Unit = {},
+    onIdentifyClick: () -> Unit = {},
+    vm: UploadViewModel = hiltViewModel(),
+) {
     val context = LocalContext.current
     val state by vm.state.collectAsStateWithLifecycle()
     var deviceName by remember { mutableStateOf("") }
@@ -62,6 +67,16 @@ fun UploadScreen(vm: UploadViewModel = hiltViewModel()) {
                 enabled = state !is UploadState.Working,
                 modifier = Modifier.fillMaxWidth(),
             ) { Text("选择 PDF 并上传") }
+            OutlinedButton(
+                onClick = onScanClick,
+                enabled = state !is UploadState.Working,
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text("扫码下载说明书") }
+            OutlinedButton(
+                onClick = onIdentifyClick,
+                enabled = state !is UploadState.Working,
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text("拍照识别设备") }
 
             when (val s = state) {
                 is UploadState.Working -> {

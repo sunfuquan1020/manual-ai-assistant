@@ -28,6 +28,12 @@ class DeviceOut(BaseModel):
     created_at: datetime
 
 
+class ManualFromUrlBody(BaseModel):
+    url: str = Field(min_length=1)
+    device_id: uuid.UUID | None = None
+    device_name: str | None = None
+
+
 class ManualOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -63,6 +69,26 @@ class SourceOut(BaseModel):
     manual_id: uuid.UUID
     page: int
     snippet: str
+
+
+# ---- Device identification (photo) ----
+
+class IdentificationOut(BaseModel):
+    brand: str | None = None
+    model_number: str | None = None
+    category: str | None = None
+    device_type: str | None = None
+    keywords: list[str] = Field(default_factory=list)
+
+
+class DeviceMatchOut(BaseModel):
+    device: DeviceOut
+    manuals: list[ManualOut]
+
+
+class IdentifyResponse(BaseModel):
+    identification: IdentificationOut
+    matches: list[DeviceMatchOut]
 
 
 # ---- Providers ----

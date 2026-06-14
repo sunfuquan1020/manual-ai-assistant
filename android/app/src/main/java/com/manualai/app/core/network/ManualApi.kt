@@ -19,12 +19,23 @@ interface ManualApi {
     suspend fun deviceManuals(@Path("id") deviceId: String): List<ManualDto>
 
     @Multipart
+    @POST("devices/identify")
+    suspend fun identify(
+        @Part file: MultipartBody.Part,
+        @Part("provider") provider: RequestBody?,
+        @Part("model") model: RequestBody?,
+    ): IdentifyResponseDto
+
+    @Multipart
     @POST("manuals/upload")
     suspend fun uploadManual(
         @Part file: MultipartBody.Part,
         @Part("device_id") deviceId: RequestBody?,
         @Part("device_name") deviceName: RequestBody?,
     ): ManualDto
+
+    @POST("manuals/from-url")
+    suspend fun manualFromUrl(@retrofit2.http.Body body: ManualFromUrlBody): ManualDto
 
     @POST("manuals/{id}/ingest")
     suspend fun ingest(@Path("id") manualId: String): ManualDto

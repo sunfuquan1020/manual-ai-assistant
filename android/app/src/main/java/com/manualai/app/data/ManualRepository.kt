@@ -3,7 +3,9 @@ package com.manualai.app.data
 import com.manualai.app.core.network.CreateDeviceBody
 import com.manualai.app.core.network.DeviceDto
 import com.manualai.app.core.network.ManualApi
+import com.manualai.app.core.network.IdentifyResponseDto
 import com.manualai.app.core.network.ManualDto
+import com.manualai.app.core.network.ManualFromUrlBody
 import com.manualai.app.core.network.ProviderInfoDto
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -23,6 +25,23 @@ class ManualRepository @Inject constructor(private val api: ManualApi) {
 
     suspend fun providers(): List<ProviderInfoDto> = api.providers()
 
+    suspend fun identify(
+        bytes: ByteArray,
+        mimeType: String,
+        provider: String?,
+        model: String?,
+    ): IdentifyResponseDto {
+        val imagePart = MultipartBody.Part.createFormData(
+            "file", "photo.jpg", bytes.toRequestBody(mimeType.toMediaType()),
+        )
+        val plain = "text/plain".toMediaType()
+        return api.identify(
+            file = imagePart,
+            provider = provider?.toRequestBody(plain),
+            model = model?.toRequestBody(plain),
+        )
+    }
+
     suspend fun upload(
         bytes: ByteArray,
         filename: String,
@@ -39,6 +58,11 @@ class ManualRepository @Inject constructor(private val api: ManualApi) {
             deviceName = deviceName?.ifBlank { null }?.toRequestBody(plain),
         )
     }
+
+    suspend fun fromUrl(url: String, deviceName: String?): ManualDto =
+        api.manualFromUrl(
+            ManualFromUrlBody(url = url, deviceName = deviceName?.ifBlank { null }),
+        )
 
     suspend fun ingest(manualId: String): ManualDto = api.ingest(manualId)
 

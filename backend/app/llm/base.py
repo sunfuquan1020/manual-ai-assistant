@@ -9,11 +9,24 @@ from __future__ import annotations
 
 import abc
 from collections.abc import AsyncIterator
+from dataclasses import dataclass, field
 
 from ..rag.retriever import RetrievedChunk
 
 # A conversation message: {"role": "user"|"assistant", "content": str}
 Message = dict[str, str]
+
+
+@dataclass
+class DeviceIdentification:
+    """Structured result of identifying an appliance from a photo."""
+
+    brand: str | None = None
+    model_number: str | None = None
+    category: str | None = None
+    device_type: str | None = None
+    keywords: list[str] = field(default_factory=list)
+    raw: str = ""
 
 
 class LLMProvider(abc.ABC):
@@ -26,3 +39,9 @@ class LLMProvider(abc.ABC):
     ) -> AsyncIterator[str]:
         """Yield answer text deltas. Must be an async generator."""
         ...
+
+    async def identify_device(
+        self, image_bytes: bytes, media_type: str
+    ) -> DeviceIdentification:
+        """Identify an appliance from a photo. Override in vision-capable providers."""
+        raise NotImplementedError(f"{self.name} does not support image identification")

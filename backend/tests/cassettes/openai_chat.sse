@@ -1,0 +1,10 @@
+data: {"id": "chatcmpl-test", "object": "chat.completion.chunk", "created": 1, "model": "gpt-4.1", "choices": [{"index": 0, "delta": {"role": "assistant", "content": ""}, "finish_reason": null}]}
+
+data: {"id": "chatcmpl-test", "object": "chat.completion.chunk", "created": 1, "model": "gpt-4.1", "choices": [{"index": 0, "delta": {"content": "Remove the filter"}, "finish_reason": null}]}
+
+data: {"id": "chatcmpl-test", "object": "chat.completion.chunk", "created": 1, "model": "gpt-4.1", "choices": [{"index": 0, "delta": {"content": " and rinse it under water."}, "finish_reason": null}]}
+
+data: {"id": "chatcmpl-test", "object": "chat.completion.chunk", "created": 1, "model": "gpt-4.1", "choices": [{"index": 0, "delta": {}, "finish_reason": "stop"}]}
+
+data: [DONE]
+
